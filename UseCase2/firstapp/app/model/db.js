@@ -6,7 +6,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
     host     : 'molcloudpoc.mysql.database.azure.com',
     user     : 'hpadmin@molcloudpoc',
-    password : 'HPinvent123.',
+    password : 'DBPASSWORD',
     database : 'mydb'
 });
 
