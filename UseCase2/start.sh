@@ -16,5 +16,5 @@ npm install --save-dev nodemon
 npm install appdynamics@4.5.13
 
 git clone https://scm.dimensiondata.com/sandor.bihary/mol_hybrid_cloud.git  ###Change it to the final repository. Repo need to be open.
-cp -rv mol_hybrid_cloud/UseCase2/html/* /var/www/html/
-nohup node mol_hybrid_cloud/UseCase2/firstapp/server.js &
+cp -rv UseCase2/UseCase2/html/* /var/www/html/
+nohup node UseCase2/UseCase2/firstapp/server.js &
