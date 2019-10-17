@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<!--
+	Story by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+<script charset='UTF-8'>
+window['adrum-start-time'] = new Date().getTime();
+(function(config){
+    config.appKey = 'EC-AAB-FKU';
+    config.adrumExtUrlHttp = 'http://cdn.appdynamics.com';
+    config.adrumExtUrlHttps = 'https://cdn.appdynamics.com';
+    config.beaconUrlHttp = 'http://fra-col.eum-appdynamics.com';
+    config.beaconUrlHttps = 'https://fra-col.eum-appdynamics.com';
+    config.xd = {enable : false};
+})(window['adrum-config'] || (window['adrum-config'] = {}));
+</script>
+<script src='//cdn.appdynamics.com/adrum/adrum-4.5.13.2640.js'></script>
+
+		<title>MOL-NTT Hybrid Cloud PoC</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="divided">
+
+				<!-- One -->
+					<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+						<div class="content">
+							<h1>MOL-NTT Hybrid Cloud PoC</h1>
+							<p class="major">This is just a hybrid cloud DEMO app the task navigator. Please click on the get started to get started:)</p>
+							<ul class="actions stacked">
+								<li><a href="#first" class="button big wide smooth-scroll-middle">Get Started</a></li>
+							</ul>
+						</div>
+						<div class="image">
+							<img src="images/mol2.jpg" alt="" />
+						</div>
+					</section>
+
+				<!-- Two -->
+					<section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in" id="first">
+						<div class="content">
+							<h2>Please send your task</h2>
+							<p>New Task: <input type="text" id="myText" value="Create some awesome Cloud">   </p>    
+							<button onclick="postDataset()">Send in Your Task</button>
+    							<input type="button" onclick="getDataset()" value="Get List" />
+
+							<ul class="actions stacked">
+								<li><a href="#" class="button">Learn More</a></li>
+							</ul>
+						</div>
+						<div class="image">
+							<img src="images/ntt.jpg" alt="" />
+						</div>
+					</section>
+
+<!-- Three -->
+					<section class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
+						<div class="content">
+						<p id="showData"></p>						
+						</div>
+						<div class="image">
+							<img src="images/spotlight02.jpg" alt="" />
+						</div>
+
+					</section>
+
+<!-- Four -->
+					<section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in">
+						
+								 <ul class="actions stacked">
+                                                                <li><a href="#first" class="button big wide smooth-scroll-middle">I want to create a new task</a></li>
+                                                        </ul>
+
+						<div class="image">
+							<img src="images/ntt3.jpg" alt="" />
+						</div>
+					</section>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+
+<script>
+function postDataset() {
+(async () => {
+  var x = document.getElementById("myText").value;
+  const rawResponse = await fetch('http://mollb.eastus2.cloudapp.azure.com:3000/tasks', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({task: x, status: 1})
+  });
+  const content = await rawResponse.json();
+
+  console.log(content);
+})();
+}
+
+</script>
+
+
+
+<script>
+
+async function getDataset() 
+        {
+
+const status = response => {
+  if (response.status >= 200 && response.status < 300) {
+    return Promise.resolve(response)
+  }
+  return Promise.reject(new Error(response.statusText))
+}
+
+const json = response => response.json()
+
+fetch('http://mollb.eastus2.cloudapp.azure.com:3000/tasks',{mode: 'cors'})
+  .then(status)
+  .then(json)
+  .then(data => {
+        //console.log('Request succeeded with JSON response', data)
+	CreateTableFromJSON(data)
+  })
+  .catch(error => {
+    console.log('Request failed', error)
+  })
+        }
+
+
+function CreateTableFromJSON(dataiin) {
+console.log('Request succeeded with JSON responseiiiin', dataiin)
+// EXTRACT VALUE FOR HTML HEADER. 
+        // ('Book ID', 'Book Name', 'Category' and 'Price')
+        var col = [];
+        for (var i = 0; i < dataiin.length; i++) {
+            for (var key in dataiin[i]) {
+                if (col.indexOf(key) === -1) {
+                    col.push(key);
+                }
+            }
+        }
+
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+
+        // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+        var tr = table.insertRow(-1);                   // TABLE ROW.
+
+        for (var i = 0; i < col.length; i++) {
+            var th = document.createElement("th");      // TABLE HEADER.
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < dataiin.length; i++) {
+
+            tr = table.insertRow(-1);
+
+            for (var j = 0; j < col.length; j++) {
+                var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = dataiin[i][col[j]];
+            }
+        }
+
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+    }
+
+
+
+</script>
+
+
+
+</html>

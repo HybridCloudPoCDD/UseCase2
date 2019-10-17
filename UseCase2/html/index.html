@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script charset='UTF-8'>
+window['adrum-start-time'] = new Date().getTime();
+(function(config){
+    config.appKey = 'EC-AAB-FKU';
+    config.adrumExtUrlHttp = 'http://cdn.appdynamics.com';
+    config.adrumExtUrlHttps = 'https://cdn.appdynamics.com';
+    config.beaconUrlHttp = 'http://fra-col.eum-appdynamics.com';
+    config.beaconUrlHttps = 'https://fra-col.eum-appdynamics.com';
+    config.xd = {enable : false};
+})(window['adrum-config'] || (window['adrum-config'] = {}));
+</script>
+<script src='//cdn.appdynamics.com/adrum/adrum-4.5.13.2640.js'></script>
+</head>
+
+
+<body>
+ New Task: <input type="text" id="myText" value="Create some awesome Cloud">    
+ <button onclick="postDataset()">Send in Your Task</button>
+
+    <input type="button" onclick="getDataset()" value="Get List" />
+    <p id="showData"></p>
+</body>
+
+
+<script>
+function postDataset() {
+(async () => {
+  var x = document.getElementById("myText").value;
+  const rawResponse = await fetch('http://52.177.203.253:3000/tasks', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({task: x, status: 1})
+  });
+  const content = await rawResponse.json();
+
+  console.log(content);
+})();
+}
+
+</script>
+
+
+
+<script>
+
+async function getDataset() 
+        {
+
+const status = response => {
+  if (response.status >= 200 && response.status < 300) {
+    return Promise.resolve(response)
+  }
+  return Promise.reject(new Error(response.statusText))
+}
+
+const json = response => response.json()
+
+fetch('http://52.177.203.253:3000/tasks',{mode: 'cors'})
+  .then(status)
+  .then(json)
+  .then(data => {
+        //console.log('Request succeeded with JSON response', data)
+	CreateTableFromJSON(data)
+  })
+  .catch(error => {
+    console.log('Request failed', error)
+  })
+        }
+
+
+function CreateTableFromJSON(dataiin) {
+console.log('Request succeeded with JSON responseiiiin', dataiin)
+// EXTRACT VALUE FOR HTML HEADER. 
+        // ('Book ID', 'Book Name', 'Category' and 'Price')
+        var col = [];
+        for (var i = 0; i < dataiin.length; i++) {
+            for (var key in dataiin[i]) {
+                if (col.indexOf(key) === -1) {
+                    col.push(key);
+                }
+            }
+        }
+
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+
+        // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+        var tr = table.insertRow(-1);                   // TABLE ROW.
+
+        for (var i = 0; i < col.length; i++) {
+            var th = document.createElement("th");      // TABLE HEADER.
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < dataiin.length; i++) {
+
+            tr = table.insertRow(-1);
+
+            for (var j = 0; j < col.length; j++) {
+                var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = dataiin[i][col[j]];
+            }
+        }
+
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+    }
+
+
+
+</script>
+</html>
+

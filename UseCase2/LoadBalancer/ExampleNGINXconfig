@@ -1,0 +1,22 @@
+upstream appset {
+ server 40.70.18.110;
+}
+server {
+ listen 80;
+
+ location / {
+proxy_pass http://appset;
+ }
+}
+
+upstream backend {
+ server 40.70.18.110:3000;
+}
+
+server {
+ listen 3000;
+
+ location / {
+proxy_pass http://backend;
+ }
+}
